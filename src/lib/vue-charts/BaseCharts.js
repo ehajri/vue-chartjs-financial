@@ -1,95 +1,103 @@
-// importing the modified version of Chart object.
-import Chart from './fin/index';
+import Chart from 'chart.js'
 
-export function generateChart(chartId, chartType) {
+export function generateChart (chartId, chartType) {
   return {
-    render: function render(createElement) {
-      return createElement('div', {
-        style: this.styles,
-        class: this.cssClasses,
-      }, [createElement('canvas', {
-        attrs: {
-          id: this.chartId,
-          width: this.width,
-          height: this.height,
+    render: function (createElement) {
+      return createElement(
+        'div', {
+          style: this.styles,
+          class: this.cssClasses
         },
-        ref: 'canvas',
-      })]);
+        [
+          createElement(
+            'canvas', {
+              attrs: {
+                id: this.chartId,
+                width: this.width,
+                height: this.height
+              },
+              ref: 'canvas'
+            }
+          )
+        ]
+      )
     },
+
     props: {
       chartId: {
         default: chartId,
-        type: String,
+        type: String
       },
       width: {
         default: 400,
-        type: Number,
+        type: Number
       },
       height: {
         default: 400,
-        type: Number,
+        type: Number
       },
       cssClasses: {
         type: String,
-        default: '',
+        default: ''
       },
       styles: {
-        type: Object,
+        type: Object
       },
       plugins: {
         type: Array,
-        default: function _default() {
-          return [];
-        },
-      },
-    },
-    data: function data() {
-      return {
-        _chart: null,
-        _plugins: this.plugins,
-      };
-    },
-    methods: {
-      addPlugin: function addPlugin(plugin) {
-        this.$data._plugins.push(plugin);
-      },
-      generateLegend: function generateLegend() {
-        if (this.$data._chart) {
-          return this.$data._chart.generateLegend();
+        default () {
+          return []
         }
-      },
-      renderChart: function renderChart(data, options) {
-        if (this.$data._chart) this.$data._chart.destroy();
-        this.$data._chart = new Chart(this.$refs.canvas.getContext('2d'), {
-          type: chartType,
-          data,
-          options,
-          plugins: this.$data._plugins,
-        });
-      },
-    },
-    beforeDestroy: function beforeDestroy() {
-      if (this.$data._chart) {
-        this.$data._chart.destroy();
       }
     },
-  };
+
+    data () {
+      return {
+        _chart: null,
+        _plugins: this.plugins
+      }
+    },
+
+    methods: {
+      addPlugin (plugin) {
+        this.$data._plugins.push(plugin)
+      },
+      generateLegend () {
+        if (this.$data._chart) {
+          return this.$data._chart.generateLegend()
+        }
+      },
+      renderChart (data, options) {
+        if (this.$data._chart) this.$data._chart.destroy()
+        this.$data._chart = new Chart(
+          this.$refs.canvas.getContext('2d'), {
+            type: chartType,
+            data: data,
+            options: options,
+            plugins: this.$data._plugins
+          }
+        )
+      }
+    },
+    beforeDestroy () {
+      if (this.$data._chart) {
+        this.$data._chart.destroy()
+      }
+    }
+  }
 }
 
-export var Candlestick = generateChart('candlestick-chart', 'candlestick');
-export var Ohlc = generateChart('ohlc-chart', 'ohlc');
-export var Bar = generateChart('bar-chart', 'bar');
-export var HorizontalBar = generateChart('horizontalbar-chart', 'horizontalBar');
-export var Doughnut = generateChart('doughnut-chart', 'doughnut');
-export var Line = generateChart('line-chart', 'line');
-export var Pie = generateChart('pie-chart', 'pie');
-export var PolarArea = generateChart('polar-chart', 'polarArea');
-export var Radar = generateChart('radar-chart', 'radar');
-export var Bubble = generateChart('bubble-chart', 'bubble');
-export var Scatter = generateChart('scatter-chart', 'scatter');
+export const Bar = generateChart('bar-chart', 'bar')
+export const HorizontalBar = generateChart('horizontalbar-chart', 'horizontalBar')
+export const Doughnut = generateChart('doughnut-chart', 'doughnut')
+export const Line = generateChart('line-chart', 'line')
+export const Pie = generateChart('pie-chart', 'pie')
+export const PolarArea = generateChart('polar-chart', 'polarArea')
+export const Radar = generateChart('radar-chart', 'radar')
+export const Bubble = generateChart('bubble-chart', 'bubble')
+export const Scatter = generateChart('scatter-chart', 'scatter')
+
 export default {
-  Candlestick,
-  Ohlc,
   Bar,
   HorizontalBar,
   Doughnut,
@@ -98,5 +106,5 @@ export default {
   PolarArea,
   Radar,
   Bubble,
-  Scatter,
-};
+  Scatter
+}

@@ -1,19 +1,19 @@
 {
   "name": "vue-chartjs-financial",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "vue": "^2.6.6",
-    "vue-router": "^3.0.1"
+    "vue": "^2.6.11",
+    "vue-router": "^3.4.3",
+    "chart.js": "^2.9.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-service": "^3.5.0",
-    "chart.js": "^2.7.3",
     "vue-template-compiler": "^2.5.21"
   }
 }

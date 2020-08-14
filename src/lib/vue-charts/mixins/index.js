@@ -1,89 +1,103 @@
-/* eslint-disable */
-function dataHandler(newData, oldData) {
+function dataHandler (newData, oldData) {
   if (oldData) {
-    const chart = this.$data._chart;
-    const newDatasetLabels = newData.datasets.map(dataset => dataset.label);
-    const oldDatasetLabels = oldData.datasets.map(dataset => dataset.label);
-    const oldLabels = JSON.stringify(oldDatasetLabels);
-    const newLabels = JSON.stringify(newDatasetLabels);
+    let chart = this.$data._chart
 
+    // Get new and old DataSet Labels
+    let newDatasetLabels = newData.datasets.map((dataset) => {
+      return dataset.label
+    })
+
+    let oldDatasetLabels = oldData.datasets.map((dataset) => {
+      return dataset.label
+    })
+
+    // Stringify 'em for easier compare
+    const oldLabels = JSON.stringify(oldDatasetLabels)
+    const newLabels = JSON.stringify(newDatasetLabels)
+
+    // Check if Labels are equal and if dataset length is equal
     if (newLabels === oldLabels && oldData.datasets.length === newData.datasets.length) {
       newData.datasets.forEach((dataset, i) => {
-        const oldDatasetKeys = Object.keys(oldData.datasets[i]);
-        const newDatasetKeys = Object.keys(dataset);
-        const deletionKeys = oldDatasetKeys.filter(key => key !== '_meta' && newDatasetKeys.indexOf(key) === -1);
-        deletionKeys.forEach((deletionKey) => {
-          delete chart.data.datasets[i][deletionKey];
-        });
+        // Get new and old dataset keys
+        const oldDatasetKeys = Object.keys(oldData.datasets[i])
+        const newDatasetKeys = Object.keys(dataset)
 
+        // Get keys that aren't present in the new data
+        const deletionKeys = oldDatasetKeys.filter((key) => {
+          return key !== '_meta' && newDatasetKeys.indexOf(key) === -1
+        })
+
+        // Remove outdated key-value pairs
+        deletionKeys.forEach((deletionKey) => {
+          delete chart.data.datasets[i][deletionKey]
+        })
+
+        // Update attributes individually to avoid re-rendering the entire chart
         for (const attribute in dataset) {
           if (dataset.hasOwnProperty(attribute)) {
-            chart.data.datasets[i][attribute] = dataset[attribute];
+            chart.data.datasets[i][attribute] = dataset[attribute]
           }
         }
-      });
+      })
 
       if (newData.hasOwnProperty('labels')) {
-        chart.data.labels = newData.labels;
-        this.$emit('labels:update');
+        chart.data.labels = newData.labels
+        this.$emit('labels:update')
       }
-
       if (newData.hasOwnProperty('xLabels')) {
-        chart.data.xLabels = newData.xLabels;
-        this.$emit('xlabels:update');
+        chart.data.xLabels = newData.xLabels
+        this.$emit('xlabels:update')
       }
-
       if (newData.hasOwnProperty('yLabels')) {
-        chart.data.yLabels = newData.yLabels;
-        this.$emit('ylabels:update');
+        chart.data.yLabels = newData.yLabels
+        this.$emit('ylabels:update')
       }
-
-      chart.update();
-      this.$emit('chart:update');
+      chart.update()
+      this.$emit('chart:update')
     } else {
       if (chart) {
-        chart.destroy();
-        this.$emit('chart:destroy');
+        chart.destroy()
+        this.$emit('chart:destroy')
       }
-
-      this.renderChart(this.chartData, this.options);
-      this.$emit('chart:render');
+      this.renderChart(this.chartData, this.options)
+      this.$emit('chart:render')
     }
   } else {
     if (this.$data._chart) {
-      this.$data._chart.destroy();
-
-      this.$emit('chart:destroy');
+      this.$data._chart.destroy()
+      this.$emit('chart:destroy')
     }
-
-    this.renderChart(this.chartData, this.options);
-    this.$emit('chart:render');
+    this.renderChart(this.chartData, this.options)
+    this.$emit('chart:render')
   }
 }
 
-export var reactiveData = {
-  data: function data() {
+export const reactiveData = {
+  data () {
     return {
-      chartData: null,
-    };
+      chartData: null
+    }
   },
+
   watch: {
-    chartData: dataHandler,
-  },
-};
-export var reactiveProp = {
+    'chartData': dataHandler
+  }
+}
+
+export const reactiveProp = {
   props: {
     chartData: {
       type: Object,
       required: true,
-      default: function _default() {},
-    },
+      default: () => {}
+    }
   },
   watch: {
-    chartData: dataHandler,
-  },
-};
+    'chartData': dataHandler
+  }
+}
+
 export default {
   reactiveData,
-  reactiveProp,
-};
+  reactiveProp
+}
