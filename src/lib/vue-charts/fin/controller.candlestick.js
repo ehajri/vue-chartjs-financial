@@ -1,25 +1,33 @@
-'use strict';
-
-import Chart from 'chart.js';
-import FinancialController from './controller.financial';
+﻿'use strict';
+import ControllerFinancial from './controller.financial';
 import CandlestickElement from './element.candlestick';
 
-Chart.defaults.candlestick = Chart.helpers.merge({}, Chart.defaults.financial);
+export default function (Chart) {
+	ControllerFinancial(Chart);
+	CandlestickElement(Chart)
 
-class CandlestickController extends FinancialController {
+	Chart.defaults.candlestick = Chart.helpers.merge({}, Chart.defaults.financial);
 
-	updateElements(elements, start, mode) {
-		const me = this;
-		const dataset = me.getDataset();
-		const ruler = me._ruler || me._getRuler();
+	Chart.defaults._set('global', {
+		datasets: {
+			candlestick: Chart.defaults.global.datasets.bar
+		}
+	});
 
-		for (let i = 0; i < elements.length; i++) {
-			const index = start + i;
-			const options = me.resolveDataElementOptions(index, mode);
+	Chart.controllers.candlestick = Chart.controllers.financial.extend({
+		dataElementType: Chart.elements.Candlestick,
+		updateElement(element, index, reset) {
+			const me = this;
+			const meta = me.getMeta();
+			const dataset = me.getDataset();
+			const options = me._resolveDataElementOptions(element, index);
 
-			const baseProperties = me.calculateElementProperties(index, ruler, mode === 'reset', options);
-			const properties = {
-				...baseProperties,
+			element._xScale = me.getScaleForId(meta.xAxisID);
+			element._yScale = me.getScaleForId(meta.yAxisID);
+			element._datasetIndex = me.index;
+			element._index = index;
+
+			element._model = {
 				datasetLabel: dataset.label || '',
 				// label: '', // to get label value please use dataset.data[index].label
 
@@ -28,15 +36,10 @@ class CandlestickController extends FinancialController {
 				borderColor: dataset.borderColor,
 				borderWidth: dataset.borderWidth,
 			};
-			properties.options = options;
 
-			me.updateElement(elements[i], index, properties, mode);
-		}
-	}
+			me._updateElementGeometry(element, index, reset, options);
 
-}
-
-CandlestickController.prototype.dataElementType = CandlestickElement;
-Chart.controllers.candlestick = CandlestickController;
-
-export default CandlestickController;
+			element.pivot();
+		},
+	});
+};

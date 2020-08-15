@@ -1,4 +1,4 @@
-import Chart from 'chart.js'
+import Chart from './fin/index'
 
 export function generateChart (chartId, chartType) {
   return {
@@ -87,6 +87,8 @@ export function generateChart (chartId, chartType) {
   }
 }
 
+export const Candlestick = generateChart('candlestick-chart', 'candlestick');
+export const Ohlc = generateChart('ohlc-chart', 'ohlc');
 export const Bar = generateChart('bar-chart', 'bar')
 export const HorizontalBar = generateChart('horizontalbar-chart', 'horizontalBar')
 export const Doughnut = generateChart('doughnut-chart', 'doughnut')
@@ -98,6 +100,8 @@ export const Bubble = generateChart('bubble-chart', 'bubble')
 export const Scatter = generateChart('scatter-chart', 'scatter')
 
 export default {
+  Candlestick,
+  Ohlc,
   Bar,
   HorizontalBar,
   Doughnut,
