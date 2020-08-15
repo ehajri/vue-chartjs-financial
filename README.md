@@ -16,7 +16,17 @@ OHLC and Candlestick charts/objects are added to `vue-chartjs`'s BaseCharts.js
 - Ohlc, and
 - Candlestick
 
-## Project setup
+# Installation
+Install the package in your project with
+```
+npm install vue-chartjs-financial
+```
+or include it in your package.json
+```
+"vue-chartjs-financial": "1.0.1"
+```
+
+## Repo Project setup
 ```
 npm install
 ```

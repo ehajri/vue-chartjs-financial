@@ -9,7 +9,7 @@
   "dependencies": {
     "vue": "^2.6.11",
     "vue-router": "^3.4.3",
-    "chart.js": "^2.9.3"
+    "chart.js": "2.9.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.3",
